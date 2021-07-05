@@ -1,0 +1,46 @@
+{% extends "shop/base.html" %}
+{% load static %}
+
+{% block title %}
+  {{ product.name }}
+{% endblock title %}
+
+{% block content %}
+  <div class="product-detail">
+    <div class="details-right">
+      <h1>{{ this_product.name }}</h1>
+      <img src="{% if this_product.image %}{{ this_product.image.url }}
+        {% else %}
+          {% static "img/no_image.png" %}{% endif %}"/> 
+    </div>
+    <div class="details-left">
+      <p class="price">${{ this_product.price }}</p>
+      <form action="{% url "cart:cart_add" this_product.id %}" method="post">
+        {% csrf_token %}
+        <div class="details-form">
+          <div class="form-wrapper">
+            {% for msg in cart_product_form.quantity.errors %}
+              <div class="error-div"><span>{{msg}}</span></div>
+            {% endfor %}
+            <label for="id_quantity" id="quantity">Quantity</label>
+            <select name="quantity" id="quantity">
+              {% for key, value in cart_product_form.fields.quantity.choices %}
+                <option value="{{ key }}">{{ value }}</option>
+              {% endfor %}
+            </select>
+          </div>
+          <button type="submit" value="Add to cart">Submit</button>
+        </div>
+      </form>  
+    </div>
+    <div class="details-description">
+      <p>{{ this_product.description|linebreaks }}</p>
+    </div>
+     <h2>
+        <a href="{{ this_product.category.get_absolute_url }}">
+          <p>{{ this_product.category }} <i class="fas fa-angle-double-left"></i></p>
+        </a>
+      </h2>
+  </div>
+
+{% endblock content %}

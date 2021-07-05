@@ -1,0 +1,57 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!--<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">!-->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.13.0/css/all.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="{% static "css/base.css" %}?{% now "U" %}">
+
+    <title>{% block title %}Base{% endblock title %}</title>
+  </head>
+
+  <body>
+    <header>
+      <nav>
+        <h1 class="brand">Brand</h1>
+        <button class="burger-button">
+          <span class="bar-span"></span>
+          <span class="bar-span"></span>
+          <span class="bar-span"></span>
+        </button>
+        <div class="link-menu">
+          <div class="category-wrapper">
+            <a href="#" class="category-a-link"><i class="fa fa-list-alt" aria-hidden="true"></i>Categories</a>
+            <div class="category-drop-div">
+              <a href="{% url "shop:product_list" %}" {% if not category %} class="selected" {% endif %}>All</a>
+                {% for c in categories %}
+                    <a href="{{ c.get_absolute_url }}" class=" {% if category.slug == c.slug %}selected{% endif %}">{{ c.name|title }}</a>
+                {% endfor %}
+            </div>
+          </div>
+          <a href="#" class="">Sign up</a>
+          <a href="#" class="">Sign up</a>
+          <a href="#" class="">Sign up</a>
+          <div class="cart-div">
+          <a href="{% url "cart:cart_detail" %}" class=""><i class="fas fa-cart-plus fa-lg"></i></a>
+          <div class="cart-nav"><p>{% if cart.get_total_price > 0 %}${{cart.get_total_price}}{%endif %}</p></div>
+          </div>
+        </div>
+      </nav>
+    </header>
+
+    <div class="base-wrapper">
+      {% block content %}
+      {% endblock content %}
+    </div>
+    <script src="{% static "js/base.js"%}?{% now "U" %}"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.js"
+      integrity="sha256-H+K7U5CnXl1h5ywQfKtSj8PCmoN9aaq30gDh27Xc0jk="
+      crossorigin="anonymous">
+    </script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
+  </body>
+</html>
